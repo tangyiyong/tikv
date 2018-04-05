@@ -59,6 +59,7 @@ extern crate libc;
 extern crate log;
 extern crate mio;
 extern crate murmur3;
+extern crate num_cpus;
 #[macro_use]
 extern crate prometheus;
 extern crate protobuf;
@@ -72,7 +73,7 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
-extern crate sys_info;
+extern crate sysinfo;
 extern crate tempdir;
 #[cfg(test)]
 extern crate test;

@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use sys_info;
+use num_cpus;
 
 use util::collections::HashMap;
 use util::config::{self, ReadableDuration, ReadableSize};
@@ -82,9 +82,9 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Config {
-        let cpu_num = sys_info::cpu_num().unwrap();
+        let cpu_num = num_cpus::get();
         let concurrency = if cpu_num > 8 {
-            (f64::from(cpu_num) * 0.8) as usize
+            (f64::from(cpu_num as u32) * 0.8) as usize
         } else {
             4
         };

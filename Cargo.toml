@@ -53,7 +53,8 @@ clap = "2"
 url = "1.5"
 regex = "0.1"
 fnv = "1.0"
-sys-info = "0.5.1"
+sysinfo = "0.5.3"
+num_cpus = "1.8.0"
 flat_map = "0.0.4"
 indexmap = "1.0"
 mio = "0.5"
@@ -79,7 +80,8 @@ signal = "0.4"
 git = "https://github.com/pingcap/murmur3.git"
 
 [dependencies.rocksdb]
-git = "https://github.com/pingcap/rust-rocksdb.git"
+#git = "https://github.com/pingcap/rust-rocksdb.git"
+path = "../rust-rocksdb"
 
 [dependencies.kvproto]
 git = "https://github.com/pingcap/kvproto.git"

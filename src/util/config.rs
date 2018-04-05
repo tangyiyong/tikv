@@ -635,15 +635,15 @@ pub fn check_max_open_fds(expect: u64) -> Result<(), ConfigError> {
         if err != 0 {
             return Err(ConfigError::Limit("check_max_open_fds failed".to_owned()));
         }
-        if fd_limit.rlim_cur >= expect {
+        if fd_limit.rlim_cur >= expect as i64 {
             return Ok(());
         }
 
         let prev_limit = fd_limit.rlim_cur;
-        fd_limit.rlim_cur = expect;
-        if fd_limit.rlim_max < expect {
+        fd_limit.rlim_cur = expect as i64;
+        if fd_limit.rlim_max < expect as i64 {
             // If the process is not started by privileged user, this will fail.
-            fd_limit.rlim_max = expect;
+            fd_limit.rlim_max = expect as i64;
         }
         err = libc::setrlimit(libc::RLIMIT_NOFILE, &fd_limit);
         if err == 0 {

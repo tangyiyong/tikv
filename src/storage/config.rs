@@ -13,7 +13,7 @@
 
 use std::error::Error;
 
-use sys_info;
+use num_cpus;
 
 use util::config::{self, ReadableSize};
 
@@ -47,7 +47,7 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Config {
-        let total_cpu = sys_info::cpu_num().unwrap();
+        let total_cpu = num_cpus::get();
         Config {
             data_dir: DEFAULT_DATA_DIR.to_owned(),
             gc_ratio_threshold: DEFAULT_GC_RATIO_THRESHOLD,

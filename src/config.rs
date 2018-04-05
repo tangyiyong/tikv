@@ -26,7 +26,8 @@ use std::i32;
 use log::LogLevelFilter;
 use rocksdb::{BlockBasedOptions, ColumnFamilyOptions, CompactionPriority, DBCompactionStyle,
               DBCompressionType, DBOptions, DBRecoveryMode};
-use sys_info;
+use sysinfo::{self, SystemExt};
+use num_cpus;
 
 use import::Config as ImportConfig;
 use server::Config as ServerConfig;
@@ -50,7 +51,7 @@ const RAFT_MAX_MEM: usize = 2 * GB as usize;
 pub const LAST_CONFIG_FILE: &str = "last_tikv.toml";
 
 fn memory_mb_for_cf(is_raft_db: bool, cf: &str) -> usize {
-    let total_mem = sys_info::mem_info().unwrap().total * KB;
+    let total_mem = sysinfo::System::new().get_total_memory() * KB;
     let (ratio, min, max) = match (is_raft_db, cf) {
         (true, CF_DEFAULT) => (0.02, RAFT_MIN_MEM, RAFT_MAX_MEM),
         (false, CF_DEFAULT) => (0.25, 0, usize::MAX),
@@ -825,7 +826,7 @@ impl TiKvConfig {
 
     pub fn tune_for_import_mode(&mut self) {
         // Increate concurrency for better performance.
-        let concurrency = sys_info::cpu_num().unwrap() as usize / 2;
+        let concurrency = num_cpus::get() / 2;
         self.import.num_threads = cmp::max(self.import.num_threads, concurrency);
         self.server.grpc_concurrency = cmp::max(self.server.grpc_concurrency, concurrency);
         // Turn off this to avoid unnecessary compaction.
