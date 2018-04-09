@@ -303,7 +303,7 @@ pub struct Cursor {
 impl Cursor {
     pub fn new(iter: Box<Iterator + Send>, mode: ScanMode) -> Cursor {
         Cursor {
-            iter: iter,
+            iter,
             scan_mode: mode,
             min_key: None,
             max_key: None,
